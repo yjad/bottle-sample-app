@@ -1,10 +1,12 @@
 import bottle
 import routes
+from icecream import install
 
 
 # https://github.com/kurocode25/bottle-sample-app.git
 
 app = routes.app
+install()
 
 if __name__ == '__main__':
     # this setting is running for development.

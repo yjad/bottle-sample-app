@@ -68,7 +68,8 @@ def add():
                     , form=form
                     , headers=headers
                     , registId=registId
-                    , confirm_title="Confirm Add Record")
+                    , confirm_title="Confirm Add Record"
+                    , confirm_button= "ِAdd")
         else:
             return template('add.html'
                     , error=errorMsg
@@ -127,12 +128,69 @@ def passList():
     headers = ['Book title', 'Volume number', 'Author', 'Publisher', 'Memo', 'Operation']
     return template('list.html', bookList=bookList, headers=headers)
 
-@app.route('/delete/<dataId>')
+@app.route('/delete/<dataId>', method=['GET', 'POST'])
 def delete(dataId):
+    ic(dataId)
     # Perform logical delete
     book = session.query(Books).filter(Books.id_==dataId).first()
+    headers = ['Book title', 'Volume number', 'Author', 'Publisher', 'Memo']
+
+    form = {}
+    form['name'] = book.name
+    form['volume'] = book.volume
+    form['author'] = book.author
+    form['publisher'] = book.publisher
+    form['memo'] = book.memo
+    
+    return template('confirm.html'
+                    , form=form
+                    , headers=headers
+                    , registId=dataId
+                    , confirm_title="Confirm Delete Record"
+                    , confirm_button= "Delete"
+                    , )
     book.delFlg = 1
     session.commit()
     session.close()
     redirect('/list')
 
+@app.route('/deleteX', method='POST')
+def registX():
+
+    # Receive data
+    name = request.forms.decode().get('name');
+    volume = request.forms.decode().get('volume');
+    author = request.forms.decode().get('author');
+    publisher = request.forms.decode().get('publisher');
+    memo = request.forms.decode().get('memo');
+    registId = request.forms.decode().get('id')
+
+    if request.forms.get('next') == 'back':
+        response.status = 307
+        response.set_header("Location", '/add')
+        return response
+    else:
+        if registId is not None:
+            # Update processing
+            books = session.query(Books).filter(Books.id_==registId).first()
+            books.name = name
+            books.volume = volume
+            books.author = author
+            books.publisher = publisher
+            books.memo = memo
+            session.commit()
+            session.close()
+        else:
+            # Data storage process
+            books = Books(
+                    name = name,
+                    volume = volume,
+                    author = author,
+                    publisher = publisher,
+                    memo = memo,
+                    create_date = datetime.now().date(), # to be modified by adding
+                    delFlag=0)
+            session.add(books) 
+            session.commit()
+            session.close()
+        redirect('/list') # Transition to list screen
