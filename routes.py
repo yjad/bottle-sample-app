@@ -63,11 +63,12 @@ def add():
 
         if errorMsg == []:
             # headers = ['著書名', '巻数', '著作者', '出版社', 'メモ']
-            headers = ['Book title', 'Volume number', 'Author', 'Publishing house', 'メモ']
+            headers = ['Book title', 'Volume number', 'Author', 'Publisher', 'Memo']
             return template('confirm.html'
                     , form=form
                     , headers=headers
-                    , registId=registId)
+                    , registId=registId
+                    , confirm_title="Confirm Add Record")
         else:
             return template('add.html'
                     , error=errorMsg
