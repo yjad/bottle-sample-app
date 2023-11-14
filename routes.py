@@ -3,7 +3,7 @@ from bottle import response
 from models import session, Books
 from sqlalchemy import text
 from utils.util import Utils
-
+from datetime import datetime
 app = Bottle()
 
 @app.get('/static/<filePath:path>')
@@ -109,7 +109,7 @@ def regist():
                     author = author,
                     publisher = publisher,
                     memo = memo,
-                    create_date = '01/01/2023', # to be modified by adding
+                    create_date = datetime.now().date(), # to be modified by adding
                     delFlag=0)
             session.add(books) 
             session.commit()
