@@ -1,0 +1,25 @@
+from bottle import Bottle, route, run, jinja2_template as template, static_file, request,redirect
+
+
+@route('/', method=['GET', 'POST'])
+def index():
+    if request.method == 'GET': # send request
+        headers = ['Book title', 'Volume number', 'Author', 'Publisher', 'Memo']
+        form={"A":1, "B":2}
+        return  template('test.html', 
+                        confirm_button = "Test", 
+                        confirm_title="mytitle", 
+                        headers=headers,
+                        form=form)
+    else:   # post, process forms after buttons
+
+# @route('/action_a', method= 'POST')
+# def action_a():
+        return (f"""
+            <p>request.forms.get:{request.forms.get('next')}</p> 
+            <p>request.method: {request.method}</p>
+            <p>request.query.get: {request.query.get('id')}</p>
+            """
+        )
+
+run(reloader=True, debug=True)

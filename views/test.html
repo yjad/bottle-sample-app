@@ -5,17 +5,10 @@
 {% endblock %}
 
 {% block content %}
-<form action="confirm" method="POST">
-    <input type="hidden" value="{{form['name']}}" name="name" />
-    <input type="hidden" value="{{form['volume']}}" name="volume" />
-    <input type="hidden" value="{{form['author']}}" name="author" />
-    <input type="hidden" value="{{form['publisher']}}" name="publisher" />
-    <input type="hidden" value="{{form['memo']}}" name="memo" />
-    {% if registId %}
-        <input type="hidden" value="{{registId}}" name="id" />
-    {% endif %}
+<form action="/" method="POST">
+
     <div class="container">
-        <h3>Confirm registration information</h3>
+        <h3>{{confirm_title}}</h3>
         <p>Please check the registration details</p>
         <div class="row">
             <div class="col-md-6">
@@ -31,11 +24,11 @@
                         {% endfor %}
                     </tr>
                 </table>
+                <p>this is test line</p>
             </div>
         </div>
-        <button class="btn btn-primary" name="next" value="regist">Confirm</button>
-        <button class="btn btn-secondary" name="next" value="back">Back</button>
-
+        <button class="btn btn-secondary" name="back" value="back">Back</button>
+        <button class="btn btn-primary" name="next" value="test11">{{confirm_button}}</button>
     </div>
 </form>
 {% endblock %}
